@@ -38,14 +38,14 @@ namespace RestaurantManagementSystem.Controllers
         [Route("Create Customer")]
         public async Task<IActionResult> CreateCustomerAsync([FromBody] CreateCustomerDto createCustomerDto)
         {
-            var newCustomerProfileDto = await _customerService.CreateCustomerAsync(createCustomerDto);
+            var customerCreatedDto = await _customerService.CreateCustomerAsync(createCustomerDto);
 
-            if (newCustomerProfileDto == null)
+            if (customerCreatedDto == null)
             {
                 return NotFound();
             }
 
-            return CreatedAtAction(nameof(GetProfile), new { id = newCustomerProfileDto.CustomerId }, newCustomerProfileDto);
+            return Ok(customerCreatedDto);
         }
 
     }

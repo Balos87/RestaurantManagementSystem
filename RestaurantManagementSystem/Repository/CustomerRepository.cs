@@ -17,7 +17,7 @@ namespace RestaurantManagementSystem.Repository
 
         public async Task<Customer> AddCustomerAsync(Customer customer)
         {
-            _context.Customers.Add(customer);
+            await _context.Customers.AddAsync(customer);
             await _context.SaveChangesAsync();
             return customer;
         }

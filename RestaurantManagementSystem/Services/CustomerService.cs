@@ -15,16 +15,8 @@ namespace RestaurantManagementSystem.Services
             _customerRepository = customerRepository;
         }
 
-        public async Task<CustomerProfileDto> CreateCustomerAsync(CreateCustomerDto createCustomerDto)
+        public async Task<CustomerCreatedDto> CreateCustomerAsync(CreateCustomerDto createCustomerDto)
         {
-            //var createCustomer = new CreateCustomerDto()
-            //{
-            //    FirstName = createCustomerDto.FirstName,
-            //    LastName = createCustomerDto.FirstName,
-            //    PhoneNumber = createCustomerDto.PhoneNumber,
-            //    Email = createCustomerDto.Email
-            //};
-
             var customer = new Customer()
             {
                 FirstName = createCustomerDto.FirstName,
@@ -36,15 +28,13 @@ namespace RestaurantManagementSystem.Services
 
             await _customerRepository.AddCustomerAsync(customer);
 
-            var customerProfileDto = new CustomerProfileDto()
+            var customerCreatedDto = new CustomerCreatedDto()
             {
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                PhoneNumber = customer.PhoneNumber,
-                Email = customer.Email
+                YourId = customer.CustomerId,
+                ConfirmationMessage = "Customer Successfully added!"
             };
 
-            return customerProfileDto;
+            return customerCreatedDto;
 
         }
 

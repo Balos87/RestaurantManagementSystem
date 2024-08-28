@@ -5,6 +5,6 @@ namespace RestaurantManagementSystem.Services.IServices
     public interface ICustomerService
     {
         Task<CustomerProfileDto> GetCustomerProfileAsync(int customerId);
-        Task<CustomerProfileDto> CreateCustomerAsync(CreateCustomerDto createCustomerDto);
+        Task<CustomerCreatedDto> CreateCustomerAsync(CreateCustomerDto createCustomerDto);
     }
 }
