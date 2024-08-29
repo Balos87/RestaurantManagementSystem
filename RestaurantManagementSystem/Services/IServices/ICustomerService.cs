@@ -4,7 +4,11 @@ namespace RestaurantManagementSystem.Services.IServices
 {
     public interface ICustomerService
     {
-        Task<CustomerProfileDto> GetCustomerProfileAsync(int customerId);
-        Task<CustomerProfileDto> CreateCustomerAsync(CreateCustomerDto createCustomerDto);
+        // ------ CRUD Operations for Customers -------
+        Task<CustomerCreatedDto> CreateCustomerProfileAsync(CreateCustomerDto createCustomerDto);
+        Task<CustomerProfileDto> ReadCustomerProfileAsync(int customerId);
+        Task<CustomerProfileUpdatedDto> UpdateCustomerProfileAsync(UpdateCustomerProfileDto updateCustomerProfileDto);
+        Task<CustomerDeletedDto> DeleteCustomerProfileAsync(DeleteCustomerProfileDto deleteCustomerProfileDto);
+        // --------------------------------------------
     }
 }
