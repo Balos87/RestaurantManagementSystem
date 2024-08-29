@@ -15,18 +15,52 @@ namespace RestaurantManagementSystem.Repository
             _context = context;
         }
 
-        public async Task<Customer> AddCustomerAsync(Customer customer)
+        public async Task<Customer> CreateCustomerProfileAsync(Customer customer)
         {
-            await _context.Customers.AddAsync(customer);
+            try
+            {
+                await _context.Customers.AddAsync(customer);
+                await _context.SaveChangesAsync();
+                return customer;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Error when adding data");
+            }
+        }
+
+        public async Task<Customer> ReadCustomerProfileAsync(int customerId)
+        {
+            try
+            {
+                return await _context.Customers.SingleOrDefaultAsync(c => c.CustomerId == customerId);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Error when fetching data");
+            }
+        }
+
+        public async Task UpdateCustomerProfileAsync(Customer customer)
+        {
+            _context.Customers.Update(customer);
+            await _context.SaveChangesAsync();          
+        }
+
+        public async Task<bool> DeleteCustomerProfileAsync(Customer customer)
+        {
+            var customerToDelete = await _context.Customers
+                .FirstOrDefaultAsync(c => c.CustomerId == customer.CustomerId && c.Email == customer.Email);
+
+            if (customerToDelete == null)
+            {
+                return false;
+            }
+
+            _context.Customers.Remove(customerToDelete);
             await _context.SaveChangesAsync();
-            return customer;
+
+            return true;
         }
-
-        public async Task<Customer> GetCustomerByIdAsync(int customerId)
-        {
-            return await _context.Customers.SingleOrDefaultAsync(c => c.CustomerId == customerId);
-        }
-
-
     }
 }

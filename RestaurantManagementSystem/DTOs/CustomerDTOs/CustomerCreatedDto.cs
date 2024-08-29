@@ -5,10 +5,8 @@ namespace RestaurantManagementSystem.DTOs.CustomerDTOs
 {
     public class CustomerCreatedDto
     {
-        [Description("Customer Successfully added!")]
-        public string ConfirmationMessage { get; set; }
-
-        [Description("Your ID, please use this to find the profile in the database!")]
-        public int YourId { get; set; }
+        public string Confirmation { get; set; } = "Customer Successfully Added!";
+        public int CustomerId { get; set; }
+        public string Message { get; set; } = "Please use this ID to view the profile.";
     }
 }
