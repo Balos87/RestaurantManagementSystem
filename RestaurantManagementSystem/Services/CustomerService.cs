@@ -4,6 +4,7 @@ using RestaurantManagementSystem.Repository.IRepository;
 using RestaurantManagementSystem.DTOs.CustomerDTOs;
 using RestaurantManagementSystem.Services.IServices;
 using Microsoft.AspNetCore.Http.HttpResults;
+using RestaurantManagementSystem.DTOs.Customers;
 
 namespace RestaurantManagementSystem.Services
 {
@@ -16,7 +17,7 @@ namespace RestaurantManagementSystem.Services
             _customerRepository = customerRepository;
         }
 
-        public async Task<CustomerCreatedDto> CreateCustomerProfileAsync(CreateCustomerDto createCustomerDto)
+        public async Task CreateCustomerProfileAsync(CreateCustomerDto createCustomerDto)
         {
             var customer = new Customer()
             {
@@ -24,70 +25,74 @@ namespace RestaurantManagementSystem.Services
                 LastName = createCustomerDto.LastName,
                 PhoneNumber = createCustomerDto.PhoneNumber,
                 Email = createCustomerDto.Email
-
-            };
-            
-            await _customerRepository.CreateCustomerProfileAsync(customer);
-
-            var customerCreatedDto = new CustomerCreatedDto()
-            {
-                CustomerId = customer.CustomerId,
             };
 
-            return customerCreatedDto;
-
+            await _customerRepository.CreateCustomerRepoAsync(customer);
         }
 
-        public async Task<CustomerProfileDto> ReadCustomerProfileAsync(int customerId)
+        public async Task<CustomerSingleDto> ReadCustomerProfileAsync(int customerId)
         {
-            var customer = await _customerRepository.ReadCustomerProfileAsync(customerId);
+            var customer = await _customerRepository.ReadCustomerRepoAsync(customerId);
 
             if (customer == null)
             {
                 return null;
             }
 
-            var customerProfileDto = new CustomerProfileDto()
+            var customerDto = new CustomerSingleDto()
             {
-                CustomerId = customer.CustomerId,
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
                 Email = customer.Email,
                 PhoneNumber = customer.PhoneNumber
             };
 
-            return customerProfileDto;
+            return customerDto;
         }
 
-        public async Task<CustomerProfileUpdatedDto> UpdateCustomerProfileAsync(UpdateCustomerProfileDto updateCustomerProfileDto)
+        public async Task<IEnumerable<CustomerDto>> ReadAllCustomersAsync()
         {
-            var customer = await _customerRepository.ReadCustomerProfileAsync(updateCustomerProfileDto.CustomerId) ?? throw new ArgumentException("No customer was found");
+            var customers = await _customerRepository.ReadAllCustomersRepoAsync();
+
+            var customerViewModels = customers.Select(customer => new CustomerDto()
+            {
+                CustomerId = customer.CustomerId,
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                Email = customer.Email,
+                PhoneNumber = customer.PhoneNumber
+            });
+
+            return customerViewModels;
+        }
+
+        public async Task<bool> UpdateCustomerProfileAsync(int customerId, UpdateCustomerProfileDto updateCustomerProfileDto)
+        {
+            var customer = await _customerRepository.ReadCustomerRepoAsync(customerId);
+            if (customer == null)
+            {
+                return false;
+            }
+
             customer.FirstName = updateCustomerProfileDto.FirstName;
             customer.LastName = updateCustomerProfileDto.LastName;
             customer.Email = updateCustomerProfileDto.Email;
             customer.PhoneNumber = updateCustomerProfileDto.PhoneNumber;
 
-            await _customerRepository.UpdateCustomerProfileAsync(customer);
+            await _customerRepository.UpdateCustomerRepoAsync(customer);
 
-            return new CustomerProfileUpdatedDto();
+            return true;
         }
 
-        public async Task<CustomerDeletedDto> DeleteCustomerProfileAsync(DeleteCustomerProfileDto deleteCustomerProfileDto)
+        public async Task<bool> DeleteCustomerProfileAsync(int customerId, string email)
         {
             var customer = new Customer()
             {
-                CustomerId = deleteCustomerProfileDto.CustomerId,
-                Email = deleteCustomerProfileDto.Email
+                CustomerId = customerId,
+                Email = email
             };
 
-            var successfullyDeleted = await _customerRepository.DeleteCustomerProfileAsync(customer);
-
-            if (!successfullyDeleted)
-            {
-                return null;
-            }
-          
-            return new CustomerDeletedDto();
+            return await _customerRepository.DeleteCustomerRepoAsync(customer);
         }
     }
 }

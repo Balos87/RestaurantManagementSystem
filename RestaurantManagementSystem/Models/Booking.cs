@@ -9,10 +9,6 @@ namespace RestaurantManagementSystem.Models
         [Key]
         public int BookingId { get; set; }
 
-        //[ForeignKey(nameof(Models.Table))]
-        //public int TableId { get; set; }
-        //public Table Table { get; set; }
-
         [ForeignKey(nameof(Models.Customer))]
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }

@@ -1,11 +1,11 @@
-﻿namespace RestaurantManagementSystem.DTOs.CustomerDTOs
+﻿namespace RestaurantManagementSystem.DTOs.Customers
 {
-    public class UpdateCustomerProfileDto
+    public class CustomerDto
     {
         public int CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public string Email { get; set; }        
     }
 }

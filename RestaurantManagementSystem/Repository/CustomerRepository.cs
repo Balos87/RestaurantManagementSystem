@@ -15,7 +15,7 @@ namespace RestaurantManagementSystem.Repository
             _context = context;
         }
 
-        public async Task<Customer> CreateCustomerProfileAsync(Customer customer)
+        public async Task<Customer> CreateCustomerRepoAsync(Customer customer)
         {
             try
             {
@@ -25,11 +25,11 @@ namespace RestaurantManagementSystem.Repository
             }
             catch (Exception)
             {
-                throw new Exception("Error when adding data");
+                throw new Exception("Could not add data to database.");
             }
         }
 
-        public async Task<Customer> ReadCustomerProfileAsync(int customerId)
+        public async Task<Customer> ReadCustomerRepoAsync(int customerId)
         {
             try
             {
@@ -37,17 +37,29 @@ namespace RestaurantManagementSystem.Repository
             }
             catch (Exception)
             {
-                throw new Exception("Error when fetching data");
+                throw new Exception("Could not fetch data from database.");
             }
         }
 
-        public async Task UpdateCustomerProfileAsync(Customer customer)
+        public async Task<IEnumerable<Customer>> ReadAllCustomersRepoAsync()
+        {
+            try
+            {
+                return await _context.Customers.ToListAsync();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Could not fetch data from database.");
+            }
+        }
+
+        public async Task UpdateCustomerRepoAsync(Customer customer)
         {
             _context.Customers.Update(customer);
             await _context.SaveChangesAsync();          
         }
 
-        public async Task<bool> DeleteCustomerProfileAsync(Customer customer)
+        public async Task<bool> DeleteCustomerRepoAsync(Customer customer)
         {
             var customerToDelete = await _context.Customers
                 .FirstOrDefaultAsync(c => c.CustomerId == customer.CustomerId && c.Email == customer.Email);
@@ -62,5 +74,6 @@ namespace RestaurantManagementSystem.Repository
 
             return true;
         }
+
     }
 }

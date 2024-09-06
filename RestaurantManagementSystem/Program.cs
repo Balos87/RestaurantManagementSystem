@@ -12,7 +12,7 @@ namespace RestaurantManagementSystem
     {
         public static void Main(string[] args)
         {
-            //<<< Env filen för att följa säkerhetsstandard.>>> Fick ladda hem paketet DotNetEnv för att kunna använda mig av .env filen.
+            //<<< Env filen för att följa säkerhetsstandard.>>>
             Env.Load();
 
             var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +25,18 @@ namespace RestaurantManagementSystem
 
             builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
             builder.Services.AddScoped<ICustomerService, CustomerService>();
+
+            builder.Services.AddScoped<ITableRepository, TableRepository>();
+            builder.Services.AddScoped<ITableService, TableService>();
+
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<IBookingService, BookingService>();
+
+            builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+            builder.Services.AddScoped<IMenuService, MenuService>();
+
+            builder.Services.AddScoped<IDishRepository, DishRepository>();
+            builder.Services.AddScoped<IDishService, DishService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
