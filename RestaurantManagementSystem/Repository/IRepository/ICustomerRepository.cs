@@ -6,10 +6,11 @@ namespace RestaurantManagementSystem.Repository.IRepository
     public interface ICustomerRepository
     {
         // ------ CRUD Operations for Customers -------
-        Task<Customer> CreateCustomerProfileAsync(Customer customer); // Create
-        Task<Customer> ReadCustomerProfileAsync(int customerId); // Read
-        Task UpdateCustomerProfileAsync(Customer customer); // Update
-        Task<bool> DeleteCustomerProfileAsync(Customer customer); // Delete
+        Task<Customer> CreateCustomerRepoAsync(Customer customer); // Create
+        Task<Customer> ReadCustomerRepoAsync(int customerId); // Read
+        Task<IEnumerable<Customer>> ReadAllCustomersRepoAsync();
+        Task UpdateCustomerRepoAsync(Customer customer); // Update
+        Task<bool> DeleteCustomerRepoAsync(Customer customer); // Delete
         // --------------------------------------------
     }
 }

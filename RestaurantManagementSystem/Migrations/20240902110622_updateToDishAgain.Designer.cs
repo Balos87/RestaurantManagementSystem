@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantManagementSystem.Data;
 
@@ -11,9 +12,11 @@ using RestaurantManagementSystem.Data;
 namespace RestaurantManagementSystem.Migrations
 {
     [DbContext(typeof(RestaurantManagementSystemContext))]
-    partial class RestaurantManagementSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20240902110622_updateToDishAgain")]
+    partial class updateToDishAgain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,11 +149,11 @@ namespace RestaurantManagementSystem.Migrations
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("MenuId")
+                    b.Property<int>("MenuId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("DishId");
 
@@ -274,11 +277,11 @@ namespace RestaurantManagementSystem.Migrations
 
             modelBuilder.Entity("RestaurantManagementSystem.Models.Dish", b =>
                 {
-                    b.HasOne("RestaurantManagementSystem.Models.Menu", "Menu")
+                    b.HasOne("RestaurantManagementSystem.Models.Menu", null)
                         .WithMany("Dishes")
-                        .HasForeignKey("MenuId");
-
-                    b.Navigation("Menu");
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("RestaurantManagementSystem.Models.Booking", b =>
