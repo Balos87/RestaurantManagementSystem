@@ -1,22 +1,26 @@
 ----------------------------
 # RestaurantManagementSystem
 ----------------------------
+## Developed with Code-First, SOC and dependency-injection in the design.
 
-This is a project that was made for a school assignment.
-Its purpose is to be able to manage a restaurant with its:
+### This is a backend-project that was made for a school assignment.
+### Its purpose is to be able to manage and do CRUD-operations for a restaurant with its:
 - Customers
 - Bookings
 - Tables
 - Menus
 - Dishes
 
-You are able to do CRUD-Operations on all the
-above.
+Please put your connection-string in the env file. There is an examplefile provided.
 
 Here is a detailed diagram of the database.
 ------------------------------------------------------------------
 ![ER-Diagram-RestaurantManagementSystem](https://github.com/user-attachments/assets/1137b662-f772-4fff-8ac5-1a70a5f4477f)
 
+------------------------------------------------------------------
+------------------------------------------------------------------
+------------------------------------------------------------------
+# A detailed list of all the avaible responses and results.
 ------------------------------------------------------------------
 
 # Booking 
@@ -265,4 +269,316 @@ Here is a detailed diagram of the database.
    - An unexpected error occurred during the deletion operation.
 
 ---------
+# Customer
+    [Route("api/table")]
+----------
 
+        [HttpPost]
+        [Route("create")]
+
+1. **204 No Content**  
+   - The table was successfully created.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while creating the table.
+
+---------
+
+        [HttpGet]
+        [Route("{tableId}")]
+
+1. **200 OK**  
+   - The table information was successfully retrieved and returned.
+
+                {
+                  "tableId": 1,
+                  "tableNumber": 1,
+                  "seats": 8
+                }
+
+2. **404 Not Found**  
+   - No table with the specified `tableId` was found.
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while retrieving the table information.
+
+---------
+
+        [HttpGet]
+        [Route("tables")]
+
+1. **200 OK**  
+   - All tables were successfully retrieved and returned.
+
+                [
+                  {
+                    "tableId": 1,
+                    "tableNumber": 1,
+                    "seats": 8
+                  },
+                  {
+                    "tableId": 2,
+                    "tableNumber": 9,
+                    "seats": 2
+                  }
+                ]
+
+2. **404 Not Found**  
+   - No tables were found in the database.
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while retrieving the tables.
+
+---------
+
+        [HttpPut("update/{tableId}")]
+
+1. **204 No Content**  
+   - The table was successfully updated.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+
+3. **404 Not Found**  
+   - No table with the specified `tableId` was found.
+
+4. **500 Internal Server Error**  
+   - An unexpected error occurred while updating the table.
+
+---------
+
+        [HttpDelete("delete/{tableId}")]
+
+1. **204 No Content**  
+   - The table was successfully deleted.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+
+3. **404 Not Found**  
+   - No table with the specified `tableId` and matching table number was found.
+
+4. **500 Internal Server Error**  
+   - An unexpected error occurred while deleting the table.
+  
+---------
+# Menus
+    [Route("api/menu")]
+---------
+
+        [HttpPost("create")]
+
+1. **200 OK**  
+   - The menu was successfully created.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while creating the menu.
+
+---------
+
+        [HttpGet("{menuId}")]
+
+1. **200 OK**  
+   - The menu details were successfully retrieved and returned.
+
+                {
+                  "menuName": "TuesdayMenu",
+                  "dishes": []
+                }
+
+2. **404 Not Found**  
+   - No menu with the specified `menuId` was found.
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while retrieving the menu details.
+
+---------
+
+        [HttpGet]
+        [Route("menus")]
+
+1. **200 OK**  
+   - All menus were successfully retrieved and returned.
+
+                [
+                  {
+                    "menuId": 2,
+                    "menuName": "TuesdayMenu",
+                    "dishes": []
+                  },
+                  {
+                    "menuId": 3,
+                    "menuName": "MondayMenu",
+                    "dishes": []
+                  }
+                ]
+
+2. **500 Internal Server Error**  
+   - An unexpected error occurred while retrieving the list of menus.
+
+---------
+
+        [HttpPut("update/{menuId}")]
+
+1. **204 No Content**  
+   - The menu was successfully updated.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+
+3. **404 Not Found**  
+   - No menu with the specified `menuId` was found.
+
+4. **500 Internal Server Error**  
+   - An unexpected error occurred while updating the menu.
+
+---------
+
+        [HttpDelete("delete/{menuId}")]
+
+1. **204 No Content**  
+   - The menu was successfully deleted.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+
+3. **404 Not Found**  
+   - No menu with the specified `menuId` and matching `menuName` was found.
+
+4. **500 Internal Server Error**  
+   - An unexpected error occurred while deleting the menu.
+  
+---------
+# Dishes
+    [Route("api/dish")]
+---------
+
+        [HttpPost("create")]
+
+1. **200 OK**  
+   - The dish was successfully created.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while creating the dish.
+
+---------
+
+        [HttpGet]
+        [Route("{dishId}")]
+
+1. **200 OK**  
+   - The dish was successfully retrieved and returned.
+
+                {
+                  "dishName": "Pizza Kebab Special",
+                  "description": "pizza med kebab och sallad med sås",
+                  "price": 180,
+                  "isAvailable": true,
+                  "menu": null
+                }
+
+2. **404 Not Found**  
+   - No dish with the specified `dishId` was found.
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while retrieving the dish details.
+
+---------
+
+        [HttpGet]
+        [Route("dishes")]
+
+1. **200 OK**  
+   - All dishes were successfully retrieved and returned.
+
+                [
+                  {
+                    "dishId": 2,
+                    "dishName": "Pizza Kebab Special",
+                    "description": "pizza med kebab och sallad med sås",
+                    "price": 180,
+                    "isAvailable": true,
+                    "menu": null
+                  },
+                  {
+                    "dishId": 3,
+                    "dishName": "Lax och Sparris",
+                    "description": "Lax med sparris och citronsås",
+                    "price": 200,
+                    "isAvailable": true,
+                    "menu": null
+                  }
+                ]
+
+2. **500 Internal Server Error**  
+   - An unexpected error occurred while retrieving the list of dishes.
+
+---------
+
+        [HttpPut("link-to-menu/{dishId}/{menuId}")]
+
+1. **204 No Content**  
+   - The dish was successfully linked to the menu.
+
+2. **400 Bad Request**  
+   - The request is invalid (e.g., the dish or menu ID is incorrect).
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while linking the dish to the menu.
+
+---------
+
+        [HttpPut("unlink-from-menu/{dishId}")]
+
+1. **204 No Content**  
+   - The dish was successfully unlinked from the menu.
+
+2. **400 Bad Request**  
+   - The request is invalid (e.g., the dish ID is incorrect).
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while unlinking the dish from the menu.
+
+---------
+
+        [HttpPut("update/{dishId}")]
+
+1. **204 No Content**  
+   - The dish was successfully updated.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+
+3. **404 Not Found**  
+   - No dish with the specified `dishId` was found.
+
+4. **500 Internal Server Error**  
+   - An unexpected error occurred while updating the dish.
+
+---------
+
+        [HttpDelete("delete/{dishId}")]
+
+1. **204 No Content**  
+   - The dish was successfully deleted.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+
+3. **404 Not Found**  
+   - No dish with the specified `dishId` and matching `dishName` was found.
+
+4. **500 Internal Server Error**  
+   - An unexpected error occurred while deleting the dish.
+---------
+---------
+## If you have any questions, please ask away! :)
