@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantManagementSystem.Data;
 
@@ -11,9 +12,11 @@ using RestaurantManagementSystem.Data;
 namespace RestaurantManagementSystem.Migrations
 {
     [DbContext(typeof(RestaurantManagementSystemContext))]
-    partial class RestaurantManagementSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20240902111455_updateToDishAThirdTime")]
+    partial class updateToDishAThirdTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,11 +149,11 @@ namespace RestaurantManagementSystem.Migrations
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("MenuId")
+                    b.Property<int>("MenuId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("DishId");
 
@@ -276,7 +279,9 @@ namespace RestaurantManagementSystem.Migrations
                 {
                     b.HasOne("RestaurantManagementSystem.Models.Menu", "Menu")
                         .WithMany("Dishes")
-                        .HasForeignKey("MenuId");
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Menu");
                 });

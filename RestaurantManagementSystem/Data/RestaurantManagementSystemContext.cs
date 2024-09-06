@@ -22,14 +22,6 @@ namespace RestaurantManagementSystem.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Dish>()
-                .Property(d => d.Price)
-                .HasColumnType("decimal(10,2)");
-
-            modelBuilder.Entity<Dish>()
-                .Property(d => d.IsAvailable)
-                .HasDefaultValue(false);
-
             modelBuilder.Entity<Customer>().HasData(new Customer
             {
                 CustomerId = 1,

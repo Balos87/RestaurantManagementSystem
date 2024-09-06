@@ -9,7 +9,7 @@ using RestaurantManagementSystem.Services.IServices;
 
 namespace RestaurantManagementSystem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/customer")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
@@ -20,9 +20,8 @@ namespace RestaurantManagementSystem.Controllers
             _customerService = customerService;
         }
 
-        [HttpPost]
-        [Route("CreateCustomerProfile")]
-        public async Task<IActionResult> CreateCustomerAsync([FromBody] CreateCustomerDto createCustomerDto)
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateCustomerControllerAsync([FromBody] CreateCustomerDto createCustomerDto)
         {
             if (!ModelState.IsValid)
             {
@@ -31,8 +30,8 @@ namespace RestaurantManagementSystem.Controllers
 
             try
             {
-                var customerCreatedDto = await _customerService.CreateCustomerProfileAsync(createCustomerDto);
-                return CreatedAtAction(nameof(ReadCustomerProfileAsync), new { name = customerCreatedDto.CustomerId }, customerCreatedDto);
+                await _customerService.CreateCustomerProfileAsync(createCustomerDto);
+                return Ok();
             }
             catch (ArgumentException ex)
             {
@@ -40,27 +39,39 @@ namespace RestaurantManagementSystem.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, "Error while trying to create the customer");
+                return StatusCode(500);
             }
         }
 
-        [HttpGet]
-        [Route("ReadCustomerProfile")]
-        public async Task<IActionResult> ReadCustomerProfileAsync(int customerId)
+        [HttpGet("{customerId}")]
+        public async Task<IActionResult> ReadCustomerControllerAsync(int customerId)
         {
-            var profileDto = await _customerService.ReadCustomerProfileAsync(customerId);
+            var customerDto = await _customerService.ReadCustomerProfileAsync(customerId);
 
-            if (profileDto == null)
+            if (customerDto == null)
             {
                 return NotFound();
             }
 
-            return Ok(profileDto);
+            return Ok(customerDto);
         }
 
-        [HttpPut]
-        [Route("UpdateCustomerProfile")]
-        public async Task<IActionResult> UpdateCustomerProfileAsync([FromBody] UpdateCustomerProfileDto updateCustomerProfileDto)
+        [HttpGet]
+        [Route("customers")]
+        public async Task<IActionResult> ReadAllCustomersControllerAsync()
+        {
+            var customerDto = await _customerService.ReadAllCustomersAsync();
+
+            if (!customerDto.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(customerDto);
+        }
+
+        [HttpPut("update/{customerId}")]
+        public async Task<IActionResult> UpdateCustomerControllerAsync(int customerId, [FromBody] UpdateCustomerProfileDto updateCustomerProfileDto)
         {
             if (!ModelState.IsValid)
             {
@@ -69,14 +80,14 @@ namespace RestaurantManagementSystem.Controllers
 
             try
             {
-                var customerProfileUpdated = await _customerService.UpdateCustomerProfileAsync(updateCustomerProfileDto);
+                var customerUpdated = await _customerService.UpdateCustomerProfileAsync(customerId, updateCustomerProfileDto);
 
-                if (customerProfileUpdated == null)
+                if (!customerUpdated)
                 {
-                    return NotFound("No custmer was found to edit.");
+                    return NotFound();
                 }
 
-                return Ok(customerProfileUpdated);
+                return NoContent();
             }
             catch (ArgumentException ex)
             {
@@ -84,13 +95,12 @@ namespace RestaurantManagementSystem.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, "Error when trying to update customer.");
+                return StatusCode(500);
             }
         }
 
-        [HttpDelete]
-        [Route("DeleteCustomerProfile")]
-        public async Task <IActionResult> DeleteCustomerProfileAsync([FromBody] DeleteCustomerProfileDto deleteCustomerProfileDto)
+        [HttpDelete("delete/{customerId}")]
+        public async Task<IActionResult> DeleteCustomerControllerAsync(int customerId, [FromBody] DeleteCustomerProfileDto deleteCustomerProfileDto)
         {
             if (!ModelState.IsValid)
             {
@@ -99,14 +109,14 @@ namespace RestaurantManagementSystem.Controllers
 
             try
             {
-                var customerDeletedDto = await _customerService.DeleteCustomerProfileAsync(deleteCustomerProfileDto);
+                var success = await _customerService.DeleteCustomerProfileAsync(customerId, deleteCustomerProfileDto.Email);
 
-                if (customerDeletedDto == null)
+                if (!success)
                 {
-                    return NotFound("No customer found with these parameters");
+                    return NotFound();
                 }
 
-                return Ok(customerDeletedDto);
+                return NoContent();
             }
             catch (ArgumentException ex)
             {
@@ -114,26 +124,8 @@ namespace RestaurantManagementSystem.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(500, "Error when trying to delete customer");
+                return StatusCode(500);
             }
         }
-
-
-
     }
 }
-
-
-//[HttpGet]
-//[Route("profile")]
-//public async Task<ActionResult<Customer>> GetProfile(int customerId)
-//{
-//    var profileDto = await _customerService.GetCustomerProfileAsync(customerId);
-
-//    if (profileDto == null)
-//    {
-//        return NotFound();
-//    }
-
-//    return Ok(profileDto);
-//}

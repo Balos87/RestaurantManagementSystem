@@ -1,14 +1,16 @@
 ﻿using RestaurantManagementSystem.DTOs.CustomerDTOs;
+using RestaurantManagementSystem.DTOs.Customers;
 
 namespace RestaurantManagementSystem.Services.IServices
 {
     public interface ICustomerService
     {
         // ------ CRUD Operations for Customers -------
-        Task<CustomerCreatedDto> CreateCustomerProfileAsync(CreateCustomerDto createCustomerDto);
-        Task<CustomerProfileDto> ReadCustomerProfileAsync(int customerId);
-        Task<CustomerProfileUpdatedDto> UpdateCustomerProfileAsync(UpdateCustomerProfileDto updateCustomerProfileDto);
-        Task<CustomerDeletedDto> DeleteCustomerProfileAsync(DeleteCustomerProfileDto deleteCustomerProfileDto);
+        Task CreateCustomerProfileAsync(CreateCustomerDto createCustomerDto);
+        Task<CustomerSingleDto> ReadCustomerProfileAsync(int customerId);
+        Task<IEnumerable<CustomerDto>> ReadAllCustomersAsync();
+        Task<bool> UpdateCustomerProfileAsync(int customerId, UpdateCustomerProfileDto updateCustomerProfileDto);
+        Task<bool> DeleteCustomerProfileAsync(int customerId, string email);
         // --------------------------------------------
     }
 }
