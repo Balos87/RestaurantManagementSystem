@@ -162,3 +162,107 @@ Here is a detailed diagram of the database.
    - No booking with the specified `bookingId` was found.
 
 
+----------------------------------
+
+# Customer
+    [Route("api/customer")]
+
+        [HttpPost("create")]
+1. **200 OK**  
+   - The customer profile was successfully created.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+   - An argument exception occurred, such as invalid input data.
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while saving the customer profile.
+
+---------
+
+        [HttpGet("{customerId}")]
+
+1. **200 OK**  
+   - The customer profile was successfully retrieved and returned.
+                
+                {
+                  "firstName": "Frank",
+                  "lastName": "Leo",
+                  "email": "Frank.Leo@gmail.com",
+                  "phoneNumber": "1234567890"
+                }
+
+2. **404 Not Found**  
+   - No customer was found with the specified `customerId`.
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while retrieving the customer profile.
+
+---------
+
+        [HttpGet]
+        [Route("customers")]
+
+1. **200 OK**  
+   - All customer profiles were successfully retrieved and returned.
+  
+                [
+                  {
+                    "customerId": 1,
+                    "firstName": "Frank",
+                    "lastName": "Leo",
+                    "email": "Frank.Leo@gmail.com",
+                    "phoneNumber": "1234567890"
+                  },
+                  {
+                    "customerId": 3,
+                    "firstName": "Jonny",
+                    "lastName": "Svensson",
+                    "email": "jonnys-email@example.com",
+                    "phoneNumber": "+46702222222"
+                  }
+                ]
+
+2. **404 Not Found**  
+   - No customer profiles were found in the database.
+
+3. **500 Internal Server Error**  
+   - An unexpected error occurred while retrieving the customer profiles.
+  
+
+---------
+
+        [HttpPut("update/{customerId}")]
+
+1. **204 No Content**  
+   - The customer profile was successfully updated.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+   - An argument exception occurred, such as invalid input data.
+
+3. **404 Not Found**  
+   - No customer was found with the specified `customerId`.
+
+4. **500 Internal Server Error**  
+   - An unexpected error occurred during the update operation.
+
+---------
+
+        [HttpDelete("delete/{customerId}")]
+
+1. **204 No Content**  
+   - The customer profile was successfully deleted.
+
+2. **400 Bad Request**  
+   - The request data is invalid (e.g., missing or incorrect fields).
+   - An argument exception occurred, such as a mismatch in the provided email.
+
+3. **404 Not Found**  
+   - No customer was found with the specified `customerId` and matching email.
+
+4. **500 Internal Server Error**  
+   - An unexpected error occurred during the deletion operation.
+
+---------
+
