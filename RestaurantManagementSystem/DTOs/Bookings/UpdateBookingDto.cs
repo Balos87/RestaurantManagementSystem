@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantManagementSystem.DTOs.BookingDTOs
+namespace RestaurantManagementSystem.DTOs.Bookings
 {
     public class UpdateBookingDto
     {
@@ -12,6 +12,7 @@ namespace RestaurantManagementSystem.DTOs.BookingDTOs
         public DateTime ReservationDateTime { get; set; }
         [Required]
         public DateTime EndDateTime { get; set; }
+
 
     }
 }

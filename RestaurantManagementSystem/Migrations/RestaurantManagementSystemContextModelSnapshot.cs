@@ -30,9 +30,6 @@ namespace RestaurantManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("EndDateTime")
                         .HasColumnType("datetime2");
 
@@ -42,9 +39,12 @@ namespace RestaurantManagementSystem.Migrations
                     b.Property<DateTime>("ReservationDateTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("BookingId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bookings");
                 });
@@ -78,53 +78,6 @@ namespace RestaurantManagementSystem.Migrations
                     b.ToTable("BookingTables");
                 });
 
-            modelBuilder.Entity("RestaurantManagementSystem.Models.Customer", b =>
-                {
-                    b.Property<int>("CustomerId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
-
-                    b.Property<int>("AccountType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("CustomerId");
-
-                    b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            CustomerId = 1,
-                            AccountType = 0,
-                            Email = "Frank.Leo@gmail.com",
-                            FirstName = "Frank",
-                            LastName = "Leo",
-                            PhoneNumber = "1234567890"
-                        });
-                });
-
             modelBuilder.Entity("RestaurantManagementSystem.Models.Dish", b =>
                 {
                     b.Property<int>("DishId")
@@ -149,6 +102,9 @@ namespace RestaurantManagementSystem.Migrations
                     b.Property<int?>("MenuId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Popular")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 2)");
 
@@ -157,52 +113,318 @@ namespace RestaurantManagementSystem.Migrations
                     b.HasIndex("MenuId");
 
                     b.ToTable("Dishes");
-                });
 
-            modelBuilder.Entity("RestaurantManagementSystem.Models.Employee", b =>
-                {
-                    b.Property<int>("EmployeeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeId"));
-
-                    b.Property<int>("AccountType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PersonalEmail")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("SocialSecurityNumber")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("WorkEmail")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
-                    b.HasKey("EmployeeId");
-
-                    b.ToTable("Employees");
+                    b.HasData(
+                        new
+                        {
+                            DishId = 1,
+                            Description = "A refined take on the classic Caprese, with creamy mozzarella, ripe heirloom tomatoes, and a drizzle of fragrant basil pesto.",
+                            DishName = "Caprese D'Oro",
+                            IsAvailable = true,
+                            MenuId = 1,
+                            Popular = false,
+                            Price = 28.00m
+                        },
+                        new
+                        {
+                            DishId = 2,
+                            Description = "A delicate seabass carpaccio served over crisp red cabbage slaw, garnished with pink peppercorns and a drizzle of citrus olive oil.",
+                            DishName = "Carpaccio di Branzino",
+                            IsAvailable = true,
+                            MenuId = 1,
+                            Popular = false,
+                            Price = 42.00m
+                        },
+                        new
+                        {
+                            DishId = 3,
+                            Description = "A symphony of grilled vegetables, including zucchini, eggplant, and roasted peppers, drizzled with a delicate balsamic reduction.",
+                            DishName = "Verdure alla Griglia",
+                            IsAvailable = true,
+                            MenuId = 1,
+                            Popular = false,
+                            Price = 28.00m
+                        },
+                        new
+                        {
+                            DishId = 4,
+                            Description = "Crisp corn tortillas filled with a refreshing mix of lightly marinated seafood, cucumber slices, and vine-ripened tomatoes.",
+                            DishName = "Tacos di Mare",
+                            IsAvailable = true,
+                            MenuId = 1,
+                            Popular = false,
+                            Price = 36.00m
+                        },
+                        new
+                        {
+                            DishId = 5,
+                            Description = "Crispy golden calamari, lightly battered and served with a zesty lemon aioli.",
+                            DishName = "Frittura di Calamari",
+                            IsAvailable = true,
+                            MenuId = 1,
+                            Popular = true,
+                            Price = 22.00m
+                        },
+                        new
+                        {
+                            DishId = 6,
+                            Description = "Grilled sourdough topped with juicy cherry tomatoes, basil, and a splash of extra virgin olive oil.",
+                            DishName = "Bruschetta al Pomodoro",
+                            IsAvailable = true,
+                            MenuId = 1,
+                            Popular = false,
+                            Price = 16.00m
+                        },
+                        new
+                        {
+                            DishId = 7,
+                            Description = "A creamy wild mushroom soup garnished with truffle oil and freshly ground black pepper.",
+                            DishName = "Zuppa di Funghi",
+                            IsAvailable = true,
+                            MenuId = 1,
+                            Popular = true,
+                            Price = 20.00m
+                        },
+                        new
+                        {
+                            DishId = 8,
+                            Description = "A simple and fresh arugula salad, tossed with shaved parmesan and a tangy lemon vinaigrette.",
+                            DishName = "Insalata di Rucola",
+                            IsAvailable = true,
+                            MenuId = 1,
+                            Popular = false,
+                            Price = 18.00m
+                        },
+                        new
+                        {
+                            DishId = 9,
+                            Description = "Freshly made tagliolini pasta wrapped in a delicate creamy sauce, topped with succulent shrimp marinated in herbs and citrus.",
+                            DishName = "Tagliolini Primavera",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = true,
+                            Price = 38.00m
+                        },
+                        new
+                        {
+                            DishId = 10,
+                            Description = "Soft, pillowy gnocchi paired with a fragrant seafood medley of clams, infused with garlic, white wine, and a touch of lemon.",
+                            DishName = "Gnocchi di Mare",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = true,
+                            Price = 45.00m
+                        },
+                        new
+                        {
+                            DishId = 11,
+                            Description = "A vibrant dish of fresh pasta mingling with sweet cherry tomatoes, tender tuna, and zesty oranges.",
+                            DishName = "Pasta Tricolore",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = true,
+                            Price = 42.00m
+                        },
+                        new
+                        {
+                            DishId = 12,
+                            Description = "A lavish platter of lightly battered and fried seafood, featuring crispy prawns, calamari, and anchovies.",
+                            DishName = "Fritto Misto",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = false,
+                            Price = 48.00m
+                        },
+                        new
+                        {
+                            DishId = 13,
+                            Description = "A trio of hand-cut raw delicacies featuring buttery salmon, tender tuna, and delicate seabass, served with citrus and avocado cream.",
+                            DishName = "Tris di Crudo",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = true,
+                            Price = 55.00m
+                        },
+                        new
+                        {
+                            DishId = 14,
+                            Description = "Exquisitely seared tuna wrapped in a crispy golden crust, set on a bed of julienned vegetables, and paired with a balsamic reduction.",
+                            DishName = "Tonno Dorato",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = false,
+                            Price = 52.00m
+                        },
+                        new
+                        {
+                            DishId = 15,
+                            Description = "A gourmet open-faced tart with house-smoked anchovies, fennel, sun-dried tomatoes, and a hint of citrus zest.",
+                            DishName = "Alici Affumicate",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = false,
+                            Price = 35.00m
+                        },
+                        new
+                        {
+                            DishId = 16,
+                            Description = "Luxuriously creamy tagliolini pasta adorned with fragrant shaved black truffles, offering an intense depth of flavor.",
+                            DishName = "Tagliolini al Tartufo",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = true,
+                            Price = 65.00m
+                        },
+                        new
+                        {
+                            DishId = 17,
+                            Description = "A succulent Florentine-style T-bone steak, grilled to perfection and served with crispy potato wedges.",
+                            DishName = "Bistecca Fiorentina",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = false,
+                            Price = 75.00m
+                        },
+                        new
+                        {
+                            DishId = 18,
+                            Description = "Creamy Parmesan risotto topped with crispy kale and semi-dried tomatoes. A perfect blend of richness and texture that melts in your mouth.",
+                            DishName = "Risotto al Parmigiano",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = false,
+                            Price = 40.00m
+                        },
+                        new
+                        {
+                            DishId = 19,
+                            Description = "Handcrafted paccheri pasta enveloped in a luscious tomato basil sauce, with a garnish of fresh basil leaves.",
+                            DishName = "Paccheri al Pomodoro",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = false,
+                            Price = 35.00m
+                        },
+                        new
+                        {
+                            DishId = 20,
+                            Description = "Delicately sliced beef carpaccio topped with a golden-fried egg yolk and a hint of truffle mayo.",
+                            DishName = "Carpaccio di Manzo",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = false,
+                            Price = 58.00m
+                        },
+                        new
+                        {
+                            DishId = 21,
+                            Description = "Perfectly seared cod fillet served with sautéed mushrooms and salty samphire, finished with a creamy white wine sauce.",
+                            DishName = "Merluzzo con Funghi e Salicornia",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = false,
+                            Price = 62.00m
+                        },
+                        new
+                        {
+                            DishId = 22,
+                            Description = "Al dente rigatoni pasta tossed with savory Italian sausage and finished with crispy breadcrumbs and a sprinkle of chili threads.",
+                            DishName = "Rigatoni con Salsiccia",
+                            IsAvailable = true,
+                            MenuId = 2,
+                            Popular = false,
+                            Price = 38.00m
+                        },
+                        new
+                        {
+                            DishId = 23,
+                            Description = "Layers of espresso-soaked ladyfingers, rich mascarpone cream, and a dusting of fine cocoa powder.",
+                            DishName = "Tiramisù Classico",
+                            IsAvailable = true,
+                            MenuId = 3,
+                            Popular = true,
+                            Price = 24.00m
+                        },
+                        new
+                        {
+                            DishId = 24,
+                            Description = "A silky smooth lemon panna cotta, served with a raspberry coulis and candied lemon peel.",
+                            DishName = "Panna Cotta al Limone",
+                            IsAvailable = true,
+                            MenuId = 3,
+                            Popular = true,
+                            Price = 22.00m
+                        },
+                        new
+                        {
+                            DishId = 25,
+                            Description = "A flourless chocolate and almond cake, rich and moist, served with a dollop of vanilla mascarpone.",
+                            DishName = "Torta Caprese",
+                            IsAvailable = true,
+                            MenuId = 3,
+                            Popular = false,
+                            Price = 26.00m
+                        },
+                        new
+                        {
+                            DishId = 26,
+                            Description = "Light choux pastries filled with vanilla cream, drizzled with warm dark chocolate sauce.",
+                            DishName = "Profiteroles al Cioccolato",
+                            IsAvailable = true,
+                            MenuId = 3,
+                            Popular = true,
+                            Price = 28.00m
+                        },
+                        new
+                        {
+                            DishId = 27,
+                            Description = "Crisp cannoli shells filled with sweet ricotta cream and garnished with pistachios and chocolate chips.",
+                            DishName = "Cannoli Siciliani",
+                            IsAvailable = true,
+                            MenuId = 3,
+                            Popular = false,
+                            Price = 20.00m
+                        },
+                        new
+                        {
+                            DishId = 28,
+                            Description = "A delicate Italian custard served over fresh strawberries and topped with a sprinkling of shaved almonds.",
+                            DishName = "Zabaglione con Fragole",
+                            IsAvailable = true,
+                            MenuId = 3,
+                            Popular = false,
+                            Price = 23.00m
+                        },
+                        new
+                        {
+                            DishId = 29,
+                            Description = "Artisanal gelato in a variety of flavors, including pistachio, vanilla bean, and dark chocolate.",
+                            DishName = "Gelato Artigianale",
+                            IsAvailable = true,
+                            MenuId = 3,
+                            Popular = false,
+                            Price = 14.00m
+                        },
+                        new
+                        {
+                            DishId = 30,
+                            Description = "A refreshing lemon sorbet, perfect for cleansing the palate after a rich meal.",
+                            DishName = "Sorbetto al Limone",
+                            IsAvailable = true,
+                            MenuId = 3,
+                            Popular = false,
+                            Price = 12.00m
+                        },
+                        new
+                        {
+                            DishId = 31,
+                            Description = "A scoop of vanilla gelato 'drowned' in a shot of hot espresso, creating a simple yet luxurious treat.",
+                            DishName = "Affogato al Caffè",
+                            IsAvailable = true,
+                            MenuId = 3,
+                            Popular = false,
+                            Price = 16.00m
+                        });
                 });
 
             modelBuilder.Entity("RestaurantManagementSystem.Models.Menu", b =>
@@ -221,6 +443,57 @@ namespace RestaurantManagementSystem.Migrations
                     b.HasKey("MenuId");
 
                     b.ToTable("Menus");
+
+                    b.HasData(
+                        new
+                        {
+                            MenuId = 1,
+                            MenuName = "Appetizer"
+                        },
+                        new
+                        {
+                            MenuId = 2,
+                            MenuName = "Main Courses"
+                        },
+                        new
+                        {
+                            MenuId = 3,
+                            MenuName = "Dessert"
+                        });
+                });
+
+            modelBuilder.Entity("RestaurantManagementSystem.Models.Role", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            RoleName = "Employee"
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            RoleName = "Customer"
+                        });
                 });
 
             modelBuilder.Entity("RestaurantManagementSystem.Models.Table", b =>
@@ -231,6 +504,10 @@ namespace RestaurantManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TableId"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Seats")
                         .HasColumnType("int");
 
@@ -240,17 +517,276 @@ namespace RestaurantManagementSystem.Migrations
                     b.HasKey("TableId");
 
                     b.ToTable("Tables");
+
+                    b.HasData(
+                        new
+                        {
+                            TableId = 1,
+                            Description = "A corner table by the window with a view of the city skyline.",
+                            Seats = 4,
+                            TableNumber = 1
+                        },
+                        new
+                        {
+                            TableId = 2,
+                            Description = "Secluded near a bookshelf wall, perfect for an intimate dinner.",
+                            Seats = 2,
+                            TableNumber = 2
+                        },
+                        new
+                        {
+                            TableId = 3,
+                            Description = "Spacious table beneath a chandelier with views of the fountain.",
+                            Seats = 6,
+                            TableNumber = 3
+                        },
+                        new
+                        {
+                            TableId = 4,
+                            Description = "Cozy alcove near the wine cellar with a view of the sommelier.",
+                            Seats = 4,
+                            TableNumber = 4
+                        },
+                        new
+                        {
+                            TableId = 5,
+                            Description = "Window-side table with street views, perfect for a romantic dinner.",
+                            Seats = 2,
+                            TableNumber = 5
+                        },
+                        new
+                        {
+                            TableId = 6,
+                            Description = "Grand table at the heart of the restaurant, ideal for celebrations.",
+                            Seats = 8,
+                            TableNumber = 6
+                        },
+                        new
+                        {
+                            TableId = 7,
+                            Description = "Near the fireplace, offering a cozy, warm atmosphere for family dinners.",
+                            Seats = 4,
+                            TableNumber = 7
+                        },
+                        new
+                        {
+                            TableId = 8,
+                            Description = "On an elevated platform with a view of the entire restaurant.",
+                            Seats = 6,
+                            TableNumber = 8
+                        },
+                        new
+                        {
+                            TableId = 9,
+                            Description = "Near the piano, perfect for music lovers enjoying live performances.",
+                            Seats = 2,
+                            TableNumber = 9
+                        },
+                        new
+                        {
+                            TableId = 10,
+                            Description = "View of the open kitchen for those who enjoy watching the chefs at work.",
+                            Seats = 4,
+                            TableNumber = 10
+                        });
+                });
+
+            modelBuilder.Entity("RestaurantManagementSystem.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(380)
+                        .HasColumnType("nvarchar(380)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Email = "admin.istrator@thedot.com",
+                            FirstName = "Admin",
+                            LastName = "Istrator",
+                            PasswordHash = "$2a$11$issytT5cbVCzA4EUkLOuZuqhmyQq9U9gkKOXLAbOOwMFzc9LVgKOO",
+                            PhoneNumber = "+4670123456",
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Email = "john.doe@thedot.com",
+                            FirstName = "John",
+                            LastName = "Doe",
+                            PasswordHash = "$2a$11$5JDpokuXCUKV0TVB1BD27us0N6mK570jfIiWgnz7Nt43NFGYmSSPy",
+                            PhoneNumber = "+4670123457",
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            Email = "jane.smith@thedot.com",
+                            FirstName = "Jane",
+                            LastName = "Smith",
+                            PasswordHash = "$2a$11$5JDpokuXCUKV0TVB1BD27us0N6mK570jfIiWgnz7Nt43NFGYmSSPy",
+                            PhoneNumber = "+4670123458",
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            Email = "james.brown@thedot.com",
+                            FirstName = "James",
+                            LastName = "Brown",
+                            PasswordHash = "$2a$11$5JDpokuXCUKV0TVB1BD27us0N6mK570jfIiWgnz7Nt43NFGYmSSPy",
+                            PhoneNumber = "+4670123459",
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            Email = "alice.johnson@email.com",
+                            FirstName = "Alice",
+                            LastName = "Johnson",
+                            PasswordHash = "$2a$11$VungrPK3INq5LqGtG4L8aePMBRTZrGApaSephKhpp2DGQUP4.FYk2",
+                            PhoneNumber = "+4670123460",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 6,
+                            Email = "bob.williams@email.com",
+                            FirstName = "Bob",
+                            LastName = "Williams",
+                            PasswordHash = "$2a$11$VungrPK3INq5LqGtG4L8aePMBRTZrGApaSephKhpp2DGQUP4.FYk2",
+                            PhoneNumber = "+4670123461",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 7,
+                            Email = "charlie.miller@email.com",
+                            FirstName = "Charlie",
+                            LastName = "Miller",
+                            PasswordHash = "$2a$11$VungrPK3INq5LqGtG4L8aePMBRTZrGApaSephKhpp2DGQUP4.FYk2",
+                            PhoneNumber = "+4670123462",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 8,
+                            Email = "diana.davis@email.com",
+                            FirstName = "Diana",
+                            LastName = "Davis",
+                            PasswordHash = "$2a$11$VungrPK3INq5LqGtG4L8aePMBRTZrGApaSephKhpp2DGQUP4.FYk2",
+                            PhoneNumber = "+4670123463",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 9,
+                            Email = "ethan.wilson@email.com",
+                            FirstName = "Ethan",
+                            LastName = "Wilson",
+                            PasswordHash = "$2a$11$VungrPK3INq5LqGtG4L8aePMBRTZrGApaSephKhpp2DGQUP4.FYk2",
+                            PhoneNumber = "+4670123464",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 10,
+                            Email = "fiona.taylor@email.com",
+                            FirstName = "Fiona",
+                            LastName = "Taylor",
+                            PasswordHash = "$2a$11$VungrPK3INq5LqGtG4L8aePMBRTZrGApaSephKhpp2DGQUP4.FYk2",
+                            PhoneNumber = "+4670123465",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 11,
+                            Email = "george.moore@email.com",
+                            FirstName = "George",
+                            LastName = "Moore",
+                            PasswordHash = "$2a$11$VungrPK3INq5LqGtG4L8aePMBRTZrGApaSephKhpp2DGQUP4.FYk2",
+                            PhoneNumber = "+4670123466",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 12,
+                            Email = "hannah.anderson@email.com",
+                            FirstName = "Hannah",
+                            LastName = "Anderson",
+                            PasswordHash = "$2a$11$VungrPK3INq5LqGtG4L8aePMBRTZrGApaSephKhpp2DGQUP4.FYk2",
+                            PhoneNumber = "+4670123467",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 13,
+                            Email = "ian.thomas@email.com",
+                            FirstName = "Ian",
+                            LastName = "Thomas",
+                            PasswordHash = "$2a$11$VungrPK3INq5LqGtG4L8aePMBRTZrGApaSephKhpp2DGQUP4.FYk2",
+                            PhoneNumber = "+4670123468",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 14,
+                            Email = "julia.jackson@email.com",
+                            FirstName = "Julia",
+                            LastName = "Jackson",
+                            PasswordHash = "$2a$11$VungrPK3INq5LqGtG4L8aePMBRTZrGApaSephKhpp2DGQUP4.FYk2",
+                            PhoneNumber = "+4670123469",
+                            RoleId = 3
+                        });
                 });
 
             modelBuilder.Entity("RestaurantManagementSystem.Models.Booking", b =>
                 {
-                    b.HasOne("RestaurantManagementSystem.Models.Customer", "Customer")
+                    b.HasOne("RestaurantManagementSystem.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RestaurantManagementSystem.Models.BookingTable", b =>
@@ -279,6 +815,17 @@ namespace RestaurantManagementSystem.Migrations
                         .HasForeignKey("MenuId");
 
                     b.Navigation("Menu");
+                });
+
+            modelBuilder.Entity("RestaurantManagementSystem.Models.User", b =>
+                {
+                    b.HasOne("RestaurantManagementSystem.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("RestaurantManagementSystem.Models.Booking", b =>

@@ -24,7 +24,7 @@ namespace RestaurantManagementSystem.Repository
         public async Task<Booking> ReadBookingRepoAsync(int bookingId)
         {
             return await _context.Bookings
-                .Include(b => b.Customer)
+                .Include(b => b.User)
                 .Include(b => b.BookingTables)
                 .ThenInclude(bt => bt.Table)
                 .SingleOrDefaultAsync(b => b.BookingId == bookingId);
@@ -33,7 +33,7 @@ namespace RestaurantManagementSystem.Repository
         public async Task<IEnumerable<Booking>> ReadAllBookingsRepoAsync()
         {
             return await _context.Bookings
-                .Include(b => b.Customer)
+                .Include(b => b.User)
                 .Include(b => b.BookingTables)
                 .ThenInclude(bt => bt.Table)
                 .ToListAsync();
@@ -42,7 +42,7 @@ namespace RestaurantManagementSystem.Repository
         public async Task<IEnumerable<Booking>> ReadAllBookingsByDateRepoAsync(DateTime date)
         {
             return await _context.Bookings
-                .Include(b => b.Customer)
+                .Include(b => b.User)
                 .Include(b => b.BookingTables)
                 .ThenInclude(bt => bt.Table)
                 .Where(b => b.ReservationDateTime.Date == date)
@@ -83,14 +83,16 @@ namespace RestaurantManagementSystem.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Booking>> CheckBookingsForTableAsync(int tableId, DateTime reservationDateTime)
+        public async Task<IEnumerable<Booking>> GetConflictingBookingsAsync(DateTime reservationDateTime)
         {
-            return await _context.BookingTables
-                .Where(bt => bt.TableId == tableId &&
-                             bt.ReservationStartDateTime < reservationDateTime.AddHours(2) &&
-                             bt.ReservationEndDateTime > reservationDateTime)
-                .Select(bt => bt.Booking)
+            DateTime startBuffer = reservationDateTime.AddHours(0);
+            DateTime endBuffer = reservationDateTime.AddHours(2);
+
+            return await _context.Bookings
+                .Include(b => b.BookingTables)
+                .Where(b => (b.ReservationDateTime <= endBuffer && b.EndDateTime >= startBuffer))
                 .ToListAsync();
         }
+
     }
 }

@@ -23,5 +23,6 @@ namespace RestaurantManagementSystem.Models
         public decimal Price { get; set; }
 
         public bool IsAvailable { get; set; }
+        public bool Popular { get; set; }
     }
 }

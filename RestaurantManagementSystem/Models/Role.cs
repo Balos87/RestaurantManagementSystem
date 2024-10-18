@@ -1,11 +1,14 @@
-﻿namespace RestaurantManagementSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RestaurantManagementSystem.Models
 {
-    public enum Role
+    public class Role
     {
-        Customer = 0,
-        Employee = 1,
-        Manager = 2,
-        Admin = 3,
-        SuperAdmin = 4,
+        [Key]
+        public int RoleId { get; set; }
+
+        [Required]
+        public string RoleName { get; set; }
     }
+
 }

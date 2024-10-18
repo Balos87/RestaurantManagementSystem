@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantManagementSystem.DTOs.TableDTOs
+namespace RestaurantManagementSystem.DTOs.Tables
 {
     public class CreateTableDto
     {
@@ -9,6 +9,7 @@ namespace RestaurantManagementSystem.DTOs.TableDTOs
 
         [Required]
         public int Seats { get; set; }
+        public string Description { get; set; }
 
     }
 }

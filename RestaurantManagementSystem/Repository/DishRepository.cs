@@ -77,5 +77,10 @@ namespace RestaurantManagementSystem.Repository
             return true;
         }
 
+        public async Task<IEnumerable<Dish>> PopularDishesAsync()
+        {
+            return await _context.Dishes.Where(d => d.Popular).ToListAsync();
+        }
+
     }
 }

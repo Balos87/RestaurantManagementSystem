@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantManagementSystem.DTOs.DishDTOs
+namespace RestaurantManagementSystem.DTOs.Dishes
 {
     public class DeleteDishDto
     {

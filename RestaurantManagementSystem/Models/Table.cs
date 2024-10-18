@@ -7,11 +7,10 @@ namespace RestaurantManagementSystem.Models
         [Key]
         public int TableId { get; set; }
 
-        [Range(1, 20)]
         public int TableNumber { get; set; }
 
-        [Range(1, 10)]
         public int Seats { get; set; }
+        public string Description { get; set; }
 
         public ICollection<BookingTable> BookingTables { get; set; }
     }

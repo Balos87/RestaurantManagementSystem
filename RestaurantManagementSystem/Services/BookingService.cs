@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RestaurantManagementSystem.DTOs.BookingDTOs;
 using RestaurantManagementSystem.DTOs.Bookings;
-using RestaurantManagementSystem.DTOs.TableDTOs;
+using RestaurantManagementSystem.DTOs.Tables;
 using RestaurantManagementSystem.Models;
 using RestaurantManagementSystem.Repository.IRepository;
 using RestaurantManagementSystem.Services.IServices;
@@ -11,10 +10,10 @@ namespace RestaurantManagementSystem.Services
     public class BookingService : IBookingService
     {
         private readonly IBookingRepository _bookingRepository;
-        private readonly ICustomerRepository _customerRepository;
+        private readonly IUserRepository _customerRepository;
         private readonly ITableRepository _tableRepository;
 
-        public BookingService(IBookingRepository bookingRepository, ICustomerRepository customerRepository, ITableRepository tableRepository)
+        public BookingService(IBookingRepository bookingRepository, IUserRepository customerRepository, ITableRepository tableRepository)
         {
             _bookingRepository = bookingRepository;
             _customerRepository = customerRepository;
@@ -23,7 +22,7 @@ namespace RestaurantManagementSystem.Services
 
         public async Task<int> CreateBookingServiceAsync(CreateBookingDto createBookingDto)
         {
-            var customer = await _customerRepository.ReadCustomerRepoAsync(createBookingDto.CustomerId)
+            var customer = await _customerRepository.ReadUserRepoAsync(createBookingDto.UserId)
                 ?? throw new ArgumentException("Sorry, but could not find a customer with the ID provided.");
 
             var table = await _tableRepository.ReadTableInformationAsync(createBookingDto.TableId)
@@ -45,7 +44,7 @@ namespace RestaurantManagementSystem.Services
 
             var booking = new Booking()
             {
-                CustomerId = createBookingDto.CustomerId,
+                UserId = createBookingDto.UserId,
                 NumberOfGuests = createBookingDto.NumberOfGuests,
                 ReservationDateTime = createBookingDto.ReservationDateTime,
                 EndDateTime = reservationEnd,
@@ -75,16 +74,19 @@ namespace RestaurantManagementSystem.Services
 
             var viewModel = new BookingSingleDto()
             {
-                CustomerId = booking.CustomerId,
-                FirstName = booking.Customer.FirstName,
-                LastName = booking.Customer.LastName,
+                BookingId = bookingId,
+                UserId = booking.UserId,
+                FirstName = booking.User.FirstName,
+                LastName = booking.User.LastName,
                 ReservationDateTime = booking.ReservationDateTime,
                 EndDateTime = booking.EndDateTime,
+                NumberOfGuests = booking.NumberOfGuests,
                 Tables = booking.BookingTables.Select(bt => new TableDto()
                 {
                     TableId = bt.TableId,
                     TableNumber = bt.Table.TableNumber,
-                    Seats = bt.Table.Seats
+                    Seats = bt.Table.Seats,
+                    Description = bt.Table.Description,
                 }).ToList()
             };
 
@@ -98,16 +100,18 @@ namespace RestaurantManagementSystem.Services
             var viewModel = bookings.Select(booking => new BookingDto()
             {
                 BookingId = booking.BookingId,
-                CustomerId = booking.CustomerId,
-                FirstName = booking.Customer.FirstName,
-                LastName = booking.Customer.LastName,
+                UserId = booking.UserId,
+                FirstName = booking.User.FirstName,
+                LastName = booking.User.LastName,
                 ReservationDateTime = booking.ReservationDateTime,
                 EndDateTime = booking.EndDateTime,
+                NumberOfGuests = booking.NumberOfGuests,
                 Tables = booking.BookingTables.Select(bt => new TableDto()
                 {
                     TableId = bt.Table.TableId,
                     TableNumber = bt.Table.TableNumber,
-                    Seats = bt.Table.Seats
+                    Seats = bt.Table.Seats,
+                    Description = bt.Table.Description,
                 }).ToList()
             });
 
@@ -121,16 +125,17 @@ namespace RestaurantManagementSystem.Services
             var viewModel = bookings.Select(booking => new BookingDto()
             {
                 BookingId = booking.BookingId,
-                CustomerId = booking.CustomerId,
-                FirstName = booking.Customer.FirstName,
-                LastName = booking.Customer.LastName,
+                UserId = booking.UserId,
+                FirstName = booking.User.FirstName,
+                LastName = booking.User.LastName,
                 ReservationDateTime = booking.ReservationDateTime,
                 EndDateTime = booking.EndDateTime,
                 Tables = booking.BookingTables.Select(bt => new TableDto()
                 {
                     TableId = bt.Table.TableId,
                     TableNumber = bt.Table.TableNumber,
-                    Seats = bt.Table.Seats
+                    Seats = bt.Table.Seats,
+                    Description = bt.Table.Description,
                 }).ToList()
             });
 

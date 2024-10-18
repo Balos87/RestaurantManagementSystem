@@ -1,21 +1,23 @@
 ﻿using RestaurantManagementSystem.Services.IServices;
 using RestaurantManagementSystem.Repository.IRepository;
-using RestaurantManagementSystem.DTOs.TableDTOs;
 using RestaurantManagementSystem.Models;
 using System;
 using System.Threading.Tasks;
-using RestaurantManagementSystem.DTOs.CustomerDTOs;
+using RestaurantManagementSystem.DTOs.Users;
 using RestaurantManagementSystem.Repository;
+using RestaurantManagementSystem.DTOs.Tables;
 
 namespace RestaurantManagementSystem.Services
 {
     public class TableService : ITableService
     {
         private readonly ITableRepository _tableRepository;
+        private readonly IBookingRepository _bookingRepository;
 
-        public TableService(ITableRepository tableRepository)
+        public TableService(ITableRepository tableRepository, IBookingRepository bookingRepository)
         {
             _tableRepository = tableRepository;
+            _bookingRepository = bookingRepository;
         }
 
         public async Task CreateTableAsync(CreateTableDto createTableDto)
@@ -23,7 +25,8 @@ namespace RestaurantManagementSystem.Services
             var table = new Table()
             {
                 TableNumber = createTableDto.TableNumber,
-                Seats = createTableDto.Seats
+                Seats = createTableDto.Seats,
+                Description = createTableDto.Description,
             };
 
             await _tableRepository.CreateTableAsync(table);
@@ -42,7 +45,8 @@ namespace RestaurantManagementSystem.Services
             {
                 TableId = table.TableId,
                 TableNumber = table.TableNumber,
-                Seats = table.Seats
+                Seats = table.Seats,
+                Description = table.Description,
             };
 
             return tableDto;
@@ -56,7 +60,8 @@ namespace RestaurantManagementSystem.Services
             {
                 TableId = table.TableId,
                 TableNumber = table.TableNumber,
-                Seats = table.Seats
+                Seats = table.Seats,
+                Description = table.Description,
             });
 
             return tableDtos;
@@ -72,6 +77,7 @@ namespace RestaurantManagementSystem.Services
 
             table.TableNumber = updateTableDto.TableNumber;
             table.Seats = updateTableDto.Seats;
+            table.Description = updateTableDto.Description;
 
             await _tableRepository.UpdateTableRepoAsync(table);
             return true;
@@ -82,5 +88,29 @@ namespace RestaurantManagementSystem.Services
             return await _tableRepository.DeleteTableRepoAsync(tableId, deleteTableDto.TableNumber);
         }
 
+        public async Task<IEnumerable<TableDto>> GetAvailableTablesAsync(DateTime reservationDateTime, int numberOfGuests)
+        {
+            var allTables = await _tableRepository.ReadAllTablesRepoAsync();
+
+            var conflictingBookings = await _bookingRepository.GetConflictingBookingsAsync(reservationDateTime);
+
+            var bookedTableIds = conflictingBookings
+                .SelectMany(b => b.BookingTables)
+                .Select(bt => bt.TableId)
+                .Distinct()
+                .ToList();
+
+            var availableTables = allTables
+                .Where(t => !bookedTableIds.Contains(t.TableId) && t.Seats >= numberOfGuests)
+                .Select(t => new TableDto
+                {
+                    TableId = t.TableId,
+                    TableNumber = t.TableNumber,
+                    Seats = t.Seats,
+                    Description = t.Description,
+                });
+
+            return availableTables;
+        }
     }
 }

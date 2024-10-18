@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantManagementSystem.DTOs.MenuDTOs
+namespace RestaurantManagementSystem.DTOs.Menus
 {
     public class UpdateMenuDto
     {

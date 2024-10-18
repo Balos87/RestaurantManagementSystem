@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestaurantManagementSystem.Data;
-using RestaurantManagementSystem.DTOs.CustomerDTOs;
-using RestaurantManagementSystem.DTOs.TableDTOs;
+using RestaurantManagementSystem.DTOs.Users;
+using RestaurantManagementSystem.DTOs.Tables;
 using RestaurantManagementSystem.Repository;
 using RestaurantManagementSystem.Services;
 using RestaurantManagementSystem.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestaurantManagementSystem.Controllers
 {
@@ -113,6 +114,25 @@ namespace RestaurantManagementSystem.Controllers
             catch (Exception)
             {
                 return StatusCode(500);
+            }
+        }
+
+        [HttpGet("available-tables")]
+        public async Task<IActionResult> GetAvailableTables(DateTime reservationDateTime, int numberOfGuests)
+        {
+            try
+            {
+                var availableTables = await _tableService.GetAvailableTablesAsync(reservationDateTime, numberOfGuests);
+                if (availableTables == null || !availableTables.Any())
+                {
+                    return NotFound("No tables available for the selected date and number of guests.");
+                }
+
+                return Ok(availableTables);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"{ex.Message}");
             }
         }
 

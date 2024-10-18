@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestaurantManagementSystem.DTOs.MenuDTOs;
+using RestaurantManagementSystem.DTOs.Menus;
 using RestaurantManagementSystem.Services.IServices;
 
 namespace RestaurantManagementSystem.Controllers

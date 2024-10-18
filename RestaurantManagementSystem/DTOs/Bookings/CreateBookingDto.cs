@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantManagementSystem.DTOs.BookingDTOs
+namespace RestaurantManagementSystem.DTOs.Bookings
 {
     public class CreateBookingDto
     {
         [Required]
-        public int CustomerId { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         public int TableId { get; set; }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantManagementSystem.DTOs.TableDTOs
+namespace RestaurantManagementSystem.DTOs.Tables
 {
     public class DeleteTableDto
     {

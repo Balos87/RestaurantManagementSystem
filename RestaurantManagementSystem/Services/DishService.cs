@@ -1,6 +1,5 @@
-﻿using RestaurantManagementSystem.DTOs.DishDTOs;
-using RestaurantManagementSystem.DTOs.Dishes;
-using RestaurantManagementSystem.DTOs.MenuDTOs;
+﻿using RestaurantManagementSystem.DTOs.Dishes;
+using RestaurantManagementSystem.DTOs.Menus;
 using RestaurantManagementSystem.Models;
 using RestaurantManagementSystem.Repository;
 using RestaurantManagementSystem.Repository.IRepository;
@@ -26,7 +25,8 @@ namespace RestaurantManagementSystem.Services
                 DishName = createDishDto.DishName,
                 Description = createDishDto.Description,
                 Price = createDishDto.Price,
-                IsAvailable = createDishDto.IsAvailable
+                IsAvailable = createDishDto.IsAvailable,
+                Popular = createDishDto.Popular
             };
 
             await _dishRepository.CreateDishRepoAsync(dish);
@@ -47,6 +47,7 @@ namespace RestaurantManagementSystem.Services
                 Description = dish.Description,
                 Price = dish.Price,
                 IsAvailable = dish.IsAvailable,
+                Popular = dish.Popular,
                 Menu = dish.Menu != null ? new MenuDto() { MenuId = dish.Menu.MenuId, MenuName = dish.Menu.MenuName } : null
             };
 
@@ -64,6 +65,7 @@ namespace RestaurantManagementSystem.Services
                 Description = dish.Description,
                 Price = dish.Price,
                 IsAvailable = dish.IsAvailable,
+                Popular = dish.Popular,
                 Menu = dish.Menu != null ? new MenuDto() { MenuId = dish.Menu.MenuId, MenuName = dish.Menu.MenuName } : null
             });
 
@@ -102,6 +104,7 @@ namespace RestaurantManagementSystem.Services
             dish.Description = updateDishDto.Description;
             dish.Price = updateDishDto.Price;
             dish.IsAvailable = updateDishDto.IsAvailable;
+            dish.Popular = updateDishDto.Popular;
 
             await _dishRepository.UpdateDishRepoAsync(dish);
             return true;
@@ -110,6 +113,11 @@ namespace RestaurantManagementSystem.Services
         public async Task<bool> DeleteDishAsync(int dishId, string dishName)
         {
             return await _dishRepository.DeleteDishRepoAsync(dishId, dishName);
+        }
+
+        public async Task<IEnumerable<Dish>> PopularDishesAsync()
+        {
+            return await _dishRepository.PopularDishesAsync();
         }
     }
 }

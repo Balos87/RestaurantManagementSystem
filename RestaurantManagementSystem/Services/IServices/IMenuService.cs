@@ -1,5 +1,4 @@
-﻿using RestaurantManagementSystem.DTOs.MenuDTOs;
-using RestaurantManagementSystem.DTOs.Menus;
+﻿using RestaurantManagementSystem.DTOs.Menus;
 
 namespace RestaurantManagementSystem.Services.IServices
 {

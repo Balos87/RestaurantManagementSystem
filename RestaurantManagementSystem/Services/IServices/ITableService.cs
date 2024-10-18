@@ -1,6 +1,6 @@
 ﻿
-using RestaurantManagementSystem.DTOs.CustomerDTOs;
-using RestaurantManagementSystem.DTOs.TableDTOs;
+using RestaurantManagementSystem.DTOs.Users;
+using RestaurantManagementSystem.DTOs.Tables;
 using RestaurantManagementSystem.Models;
 
 namespace RestaurantManagementSystem.Services.IServices
@@ -12,6 +12,7 @@ namespace RestaurantManagementSystem.Services.IServices
         Task<IEnumerable<TableDto>> ReadAllTablesAsync();
         Task<bool> UpdateTableInformationServiceAsync(int tableId, UpdateTableDto updateTableDto);
         Task<bool> DeleteTableServiceAsync(int tableId, DeleteTableDto deleteTableDto);
+        Task<IEnumerable<TableDto>> GetAvailableTablesAsync(DateTime reservationDateTime, int numberOfGuests);
 
     }
 }

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestaurantManagementSystem.DTOs.DishDTOs;
+using Microsoft.EntityFrameworkCore;
+using RestaurantManagementSystem.DTOs.Dishes;
 using RestaurantManagementSystem.Services.IServices;
 
 namespace RestaurantManagementSystem.Controllers
@@ -153,5 +155,13 @@ namespace RestaurantManagementSystem.Controllers
                 return StatusCode(500);
             }
         }
+
+        [HttpGet("popular")]
+        public async Task<IActionResult> PopularDishes()
+        {
+            var dishes = await _dishService.PopularDishesAsync();
+            return Ok(dishes);
+        }
+
     }
 }

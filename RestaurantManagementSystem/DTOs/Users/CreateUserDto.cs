@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RestaurantManagementSystem.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantManagementSystem.DTOs.CustomerDTOs
+namespace RestaurantManagementSystem.DTOs.Users
 {
-    public class UpdateCustomerProfileDto
+    public class CreateUserDto
     {
         [Required]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Name has to be between 2 and 50 characters long.")]
@@ -21,5 +22,10 @@ namespace RestaurantManagementSystem.DTOs.CustomerDTOs
         [StringLength(70, MinimumLength = 3, ErrorMessage = "Email has to be between 3 and 70 characters long.")]
         [EmailAddress(ErrorMessage = "Please use a valid email adress.")]
         public string Email { get; set; }
+
+        [Required]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long.")]
+        public string Password { get; set; }
+
     }
 }

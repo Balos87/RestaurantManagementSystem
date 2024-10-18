@@ -1,8 +1,7 @@
-﻿namespace RestaurantManagementSystem.DTOs.Customers
+﻿namespace RestaurantManagementSystem.DTOs.Users
 {
-    public class CustomerDto
+    public class UserSingleDto
     {
-        public int CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

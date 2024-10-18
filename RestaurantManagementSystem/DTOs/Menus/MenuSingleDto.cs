@@ -1,4 +1,4 @@
-﻿using RestaurantManagementSystem.DTOs.DishDTOs;
+﻿using RestaurantManagementSystem.DTOs.Dishes;
 
 namespace RestaurantManagementSystem.DTOs.Menus
 {

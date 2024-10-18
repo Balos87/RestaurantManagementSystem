@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RestaurantManagementSystem.DTOs.BookingDTOs;
+using RestaurantManagementSystem.DTOs.Bookings;
 using RestaurantManagementSystem.Models;
+using RestaurantManagementSystem.Services;
 using RestaurantManagementSystem.Services.IServices;
 
 namespace RestaurantManagementSystem.Controllers
@@ -10,10 +11,12 @@ namespace RestaurantManagementSystem.Controllers
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;
+        private readonly ITableService _tableService;
 
-        public BookingController(IBookingService bookingService)
+        public BookingController(IBookingService bookingService, ITableService tableService)
         {
             _bookingService = bookingService;
+            _tableService = tableService;
         }
 
         [HttpPost("create")]
@@ -102,5 +105,6 @@ namespace RestaurantManagementSystem.Controllers
             }
             return NoContent();
         }
+
     }
 }

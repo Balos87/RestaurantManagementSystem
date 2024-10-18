@@ -1,9 +1,9 @@
 ﻿using Microsoft.Identity.Client;
 using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantManagementSystem.DTOs.CustomerDTOs
+namespace RestaurantManagementSystem.DTOs.Users
 {
-    public class DeleteCustomerProfileDto
+    public class DeleteUserDto
     {
         [Required]
         [EmailAddress(ErrorMessage = "Please use a valid email adress.")]

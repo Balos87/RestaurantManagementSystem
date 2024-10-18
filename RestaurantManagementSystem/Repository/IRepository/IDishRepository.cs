@@ -9,5 +9,6 @@ namespace RestaurantManagementSystem.Repository.IRepository
         Task<IEnumerable<Dish>> ReadAllDishesRepoAsync();
         Task UpdateDishRepoAsync(Dish dish);
         Task<bool> DeleteDishRepoAsync(int dishId, string dishName);
+        Task<IEnumerable<Dish>> PopularDishesAsync();
     }
 }

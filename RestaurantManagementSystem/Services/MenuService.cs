@@ -1,5 +1,4 @@
-﻿using RestaurantManagementSystem.DTOs.DishDTOs;
-using RestaurantManagementSystem.DTOs.MenuDTOs;
+﻿using RestaurantManagementSystem.DTOs.Dishes;
 using RestaurantManagementSystem.DTOs.Menus;
 using RestaurantManagementSystem.Models;
 using RestaurantManagementSystem.Repository.IRepository;
@@ -44,6 +43,7 @@ namespace RestaurantManagementSystem.Services
                     DishName = d.DishName,
                     Description = d.Description,
                     Price = d.Price,
+                    Popular = d.Popular,
                     IsAvailable = d.IsAvailable
                 }).ToList()
             };
@@ -63,7 +63,8 @@ namespace RestaurantManagementSystem.Services
                     DishName = d.DishName,
                     Description = d.Description,
                     Price = d.Price,
-                    IsAvailable = d.IsAvailable
+                    IsAvailable = d.IsAvailable,
+                    Popular= d.Popular,
                 }).ToList()
             });
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantManagementSystem.DTOs.DishDTOs
+namespace RestaurantManagementSystem.DTOs.Dishes
 {
     public class UpdateDishDto
     {
@@ -14,5 +14,6 @@ namespace RestaurantManagementSystem.DTOs.DishDTOs
         public decimal Price { get; set; }
 
         public bool IsAvailable { get; set; }
+        public bool Popular { get; set; }
     }
 }

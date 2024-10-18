@@ -1,6 +1,6 @@
-﻿using RestaurantManagementSystem.DTOs.DishDTOs;
+﻿using RestaurantManagementSystem.DTOs.Dishes;
 
-namespace RestaurantManagementSystem.DTOs.MenuDTOs
+namespace RestaurantManagementSystem.DTOs.Menus
 {
     public class MenuDto
     {

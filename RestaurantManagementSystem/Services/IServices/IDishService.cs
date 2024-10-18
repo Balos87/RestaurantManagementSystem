@@ -1,5 +1,5 @@
-﻿using RestaurantManagementSystem.DTOs.DishDTOs;
-using RestaurantManagementSystem.DTOs.Dishes;
+﻿using RestaurantManagementSystem.DTOs.Dishes;
+using RestaurantManagementSystem.Models;
 
 namespace RestaurantManagementSystem.Services.IServices
 {
@@ -12,5 +12,6 @@ namespace RestaurantManagementSystem.Services.IServices
         Task UnlinkDishFromMenuAsync(int dishId);
         Task<bool> UpdateDishAsync(int dishId, UpdateDishDto updateDishDto);
         Task<bool> DeleteDishAsync(int dishId, string dishName);
+        Task<IEnumerable<Dish>> PopularDishesAsync();
     }
 }
